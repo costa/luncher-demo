@@ -1,0 +1,86 @@
+body {
+    font-family: "Verdana", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#message {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1ex;
+    margin: 0;
+    text-align: center;
+    font-size: large;
+    background: yellow; 
+    border-bottom: red solid 1px;
+}
+
+h1 {
+    font-size: xx-large;
+    color: red;
+    margin: 2em 0 1em 2em;
+}
+
+.place > h1 {
+    font-size: x-large;
+    color: purple;
+    cursor: crosshair;
+}
+
+.hover {
+    background: yellow;
+}
+
+ul.scale {
+    position: relative;
+    list-style: none;
+    color: LightSlateGray;
+    height: 2em;
+    padding: 0;
+    margin: 1ex;
+    cursor: crosshair;
+}
+
+ul.scale > li.time {
+    position: absolute;
+    font-size: x-small;
+    padding: 1ex;
+    border-left: LightSlateGray solid 1px;
+}
+
+ul.scale > li.time:hover {
+    background: orange;
+}
+
+.lunch-helper {
+    height: 1.5em;
+    margin: 1ex;
+}
+
+.lunch-helper > .lunch {
+    position: absolute;
+    font-size: x-small;
+    padding: 1ex;
+}
+
+.person {
+    font-size: medium;
+}
+
+.note {
+    font-size: normal;
+    font-style: italic;
+}
+
+#record {
+    margin: 2em 4em;
+}
+
+#revoke {
+    display: inline;
+}
+
+#revoke > input[type="submit"] {
+    margin-left: -2.25em;
+}

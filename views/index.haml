@@ -1,0 +1,89 @@
+!!! Strict
+%html{html_attrs("en")}
+  %head
+    %title
+      Luncher
+    %link{:href => "/jquery.autocomplete.css", :rel => "stylesheet", :media => "screen", :type => "text/css", :charset => "utf-8"}
+    %link{:href => "english.css", :rel => "stylesheet", :media => "screen", :type => "text/css", :charset => "utf-8"}
+    %script{:type => "text/javascript", :src => "/jquery.js"}
+    %script{:type => "text/javascript", :src => "/jquery.autocomplete.js"}
+    :javascript
+      var times = new Object();
+      $(document).ready(
+        function() {
+          i = 0; time_list = "<ul class=\"scale\">";   // the time scales making
+          $("#time > option").each(function() {
+            times[$(this).text()] = ++i;
+            time_list += "<li class=\"time\" style=\"top:" + i%2 + "em;" +
+                           "left:" + i*6 + "em;\">" + $(this).text() + "</li>";
+          }); time_list += "</ul>";
+          $(".place > h1").after(time_list);
+          $(".lunch").each(function() {                // ..aligning the records
+            time_i = times[$(this).children(".time").text()];            
+            if (!isNaN(time_i)) {
+              $(this).wrap("<div class=\"lunch-helper\"></div>");
+              $(this).children(".time").hide();
+              $(this).css({'left':time_i*6+'em'});
+          }});
+
+          places = new Array(); i = 0;
+          $(".place > h1").each(function() {
+            places[i++] = $(this).text();
+          });
+          $("#place").autocomplete(places);
+
+          $(".place > h1").click(function() {
+            $("#place").val($(this).text()).change();
+            $("#time").focus();
+          });
+          $(".place .time").click(function() {
+            $(this).parents(".place").children("h1").click();
+            $("#time").val($(this).text()).change();
+            $("#person").focus().select();
+          });
+          $(".place > h1, .place > .scale").hover(
+            function() { $(this).parent().addClass("hover"); },
+            function() { $(this).parent().removeClass("hover");});
+          $("#place").change(function() {
+            if ($(this).val() == "") {
+              $(this).addClass("hint");
+            } else {
+              $(this).removeClass("hint");
+              var inp = $(this).val().toLowerCase();
+              $(".place > h1").each(function() {
+                if ($(this).text().substring(0, inp.length).toLowerCase() == inp) {
+                  $("#place").val($(this).text());
+                  $(this).parent().append($("#record"));
+          }})}});
+          $("#place").change();   // initialise the presentation
+        });
+  %body
+    - if session['message']
+      #message
+        = session.delete 'message'
+    %a{:href => "/", :title => "refresh"}
+      %h1= "Luncher (#{Time.now.strftime '%H:%M'})"
+    - for place in @places
+      .place
+        %h1= place.name
+        - for lunch in @lunches
+          - if lunch.place == place
+            .lunch
+              - if lunch.person == session['person']                
+                %form#revoke{:action => "/", :method => "post", :name => "no_lunch"}
+                  %input#no_time{:type => "hidden", :name => "time", :value => ""}
+                  %input#no_person{:type => "hidden", :name => "person", :value => session['person']}
+                  %input{:type => "submit", :value => "X"}
+              %span.time= "%02d:%02d" % [lunch.time.hour, lunch.time.min]
+              %span.person= lunch.person
+              %span.note= lunch.note
+    %form#record{:action => "/", :method => "post", :name => "lunch"}
+      %input#place{:type => "text", :name => "place", :value => session['place'], :title => "Place"}
+      %select#time{:name => "time", :title => "Start Time"}
+        - (11*60).step(15*60, 15) do |time|
+          - time_s = "%02d:%02d" % [time/60, time%60]
+          %option{:selected => (time_s == session['time'])}= time_s
+      %input#person{:type => "text", :name => "person", :value => session['person'], :title => "Your Name"}
+      %input#note{:type => "text", :name => "note", :title => "Note"}
+
+      %input{:type => "submit", :value => "Lunch!"}
