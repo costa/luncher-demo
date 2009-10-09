@@ -1,1 +1,9 @@
-This is a SHORT ruby (sinatra+datamapper, and sqlite3/jquery) web app demo for corporate environments.
+This is a SHORT ruby (sinatra+datamapper[sqlite3]+haml*jquery) web app demo for corporate environments
+
+Quickstart:
+
+rake demo
+ruby -rrubygems app.rb
+
+
+Any comments, suggestions and forks are welcome, see TODO

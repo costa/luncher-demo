@@ -6,7 +6,7 @@ require 'haml'
 
 configure do
   use Rack::Reloader
-  DataMapper.setup(:default,"sqlite3:var/database.sqlite3")
+  DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:var/database.sqlite3")
   enable :sessions
 end
 
