@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'app'  # This may seem weird, but I don't see too much a problem with it
 require 'spec/rake/spectask'
 
