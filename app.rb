@@ -6,7 +6,9 @@ require 'haml'
 
 configure do
   use Rack::Reloader
+  # TODO DM setup & logging options for dev, test and production
   DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3:var/database.sqlite3")
+  DataMapper::Logger.new STDOUT, 0
   enable :sessions
 end
 
@@ -38,7 +40,7 @@ end
 get '/' do
   @places = Place.find_by_sql \
   ['SELECT Places.* FROM Places LEFT JOIN' \
-   ' (SELECT DISTINCT person, place_id FROM Lunches WHERE time > ?)' \
+   ' (SELECT DISTINCT person, place_id FROM Lunches WHERE time > ?) AS pps' \
    ' ON Places.id = place_id' \
    ' GROUP BY Places.id ORDER BY COUNT(person) DESC LIMIT ?',
    Date.today - POP_PLACES_TERM, POP_PLACES_OPT]
