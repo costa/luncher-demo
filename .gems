@@ -2,4 +2,3 @@ sinatra
 dm-core
 dm-ar-finders
 haml
-rcov

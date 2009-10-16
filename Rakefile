@@ -1,10 +1,9 @@
-require 'rubygems'
 require 'app'  # This may seem weird, but I don't see too much a problem with it
 require 'spec/rake/spectask'
 
 Spec::Rake::SpecTask.new do |t|
-# TODO  DataMapper.setup ...
-  t.rcov = true
+# TODO  DataMapper.setup etc...
+#  t.rcov = true  # apparently not supported by Heroku
 end
 
 namespace :db do
