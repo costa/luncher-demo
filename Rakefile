@@ -1,7 +1,10 @@
 require 'app'  # This may seem weird, but I don't see too much a problem with it
 require 'spec/rake/spectask'
 
-Spec::Rake::SpecTask.new
+Spec::Rake::SpecTask.new do |t|
+# TODO  DataMapper.setup ...
+  t.rcov = true
+end
 
 namespace :db do
   task :migrate do
@@ -23,7 +26,7 @@ task :setup do
 end
 
 task :demo => [:spec, :setup] do
-  eval(File.read 'demo/data.rb').each { |m| m.save }
+  eval(File.read('demo/data.rb')).each { |m| m.save }
 end
 
 task :default => :spec
