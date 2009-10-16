@@ -1,5 +1,6 @@
 sinatra
-dm-core
-dm-ar-finders
 haml
-do_postgres
+dm-core --version '>= 0.10'
+dm-ar-finders --version '>= 0.10'
+data_objects --version '>= 0.10'
+do_postgres --version '>= 0.10'
