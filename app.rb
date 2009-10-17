@@ -40,9 +40,10 @@ end
 get '/' do
   @places = Place.find_by_sql \
   ['SELECT Places.* FROM Places LEFT JOIN' \
-   ' (SELECT DISTINCT person, place_id FROM Lunches WHERE time > ?) AS pps' \
+   ' (SELECT COUNT(DISTINCT person) AS person_count, place_id FROM Lunches' \
+   '  WHERE time > ? GROUP BY place_id) AS pps' \
    ' ON Places.id = place_id' \
-   ' GROUP BY Places.id ORDER BY COUNT(person) DESC LIMIT ?',
+   ' ORDER BY person_count DESC LIMIT ?',
    Date.today - POP_PLACES_TERM, POP_PLACES_OPT]
 
   @lunches = Lunch.all :time.gte => Date.today
